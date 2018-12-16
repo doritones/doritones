@@ -28,7 +28,7 @@ exports.product_details = function (req, res) {
     })
 };
 
-exports.product_update = function (req, res) {
+exports.product_update = function (req, res, next) {
     Product.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, product) {
         if (err) return next(err);
         res.send('Product udpated.');
@@ -41,3 +41,15 @@ exports.product_delete = function (req, res) {
         res.send('Deleted successfully!');
     })
 };
+
+exports.product_findByName = (req, res) => {
+    Product.findOne({name : req.params.name}, (err, product) => {
+        if (err) return next(err);
+
+        if (product == null) {
+            res.status(204).send()
+        } else {
+            res.send(product);
+        }
+    })
+}
